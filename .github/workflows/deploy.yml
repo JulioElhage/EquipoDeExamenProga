@@ -1,0 +1,45 @@
+name: Build & Deploy ASP.NET Core 9 to Azure Web App
+
+on:
+    push:
+        branches: ["master"]
+    workflow_dispatch:
+
+env:
+    WEBAPP_NAME: "progaaplicada"
+    DOTNET_VERSION: "9.0.x"
+    PROJECT_PATH: "EquipoDeExamenProgra/EquipoDeExamenProgra.csproj" # 👈 path to your API .csproj
+    PUBLISH_DIR: "./publish"
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: actions/setup-dotnet@v4
+              with:
+                  dotnet-version: ${{ env.DOTNET_VERSION }}
+
+            - name: Restore
+              run: dotnet restore ${{ env.PROJECT_PATH }}
+
+            - name: Build
+              run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
+
+            - name: Publish
+              run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -o ${{ env.PUBLISH_DIR }}
+
+            - name: Create zip
+              run: |
+                  cd ${{ env.PUBLISH_DIR }}
+                  zip -r ../app.zip .
+                  cd ..
+                  ls -la app.zip
+
+            - name: Deploy to Azure Web App
+              uses: azure/webapps-deploy@v3
+              with:
+                  app-name: ${{ env.WEBAPP_NAME }}
+                  publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+                  package: app.zip
