@@ -4,6 +4,8 @@ using Microsoft.Extensions.Hosting;
 using EquipoDeExamenProgra.Data;        // 👈 AGREGA ESTO
 using Microsoft.EntityFrameworkCore; // 👈 AGREGA ESTO
 
+// Alguien estubo aqui.
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthorization();
 builder.Services.AddEndpointsApiExplorer();
