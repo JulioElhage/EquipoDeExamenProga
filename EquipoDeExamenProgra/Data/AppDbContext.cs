@@ -8,5 +8,6 @@ namespace EquipoDeExamenProgra.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<Habit> Habits { get; set; }
+        public DbSet<Meal> Meals { get; set; }
     }
 }

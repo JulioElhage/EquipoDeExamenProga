@@ -25,3 +25,8 @@ namespace EquipoDeExamenProgra.Models
         public bool Status { get; set; } // true = activo, false = inactivo
     }
 }
+
+//MealsController.cs
+// WorkoutsController
+// Meal.cs
+// Workout.cs
