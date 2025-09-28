@@ -14,6 +14,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<AppDbContext>(options => // DE ESTAR CON EL MISMO NOMBRE DE LA CARPETA DE DATA.
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -22,10 +23,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
 app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers(); // <-- ¡ESTO ES OBLIGATORIO!
+// Add a health check endpoint
+app.MapGet("/health", () => Results.Ok("Healthy"));
 
 app.Run();
